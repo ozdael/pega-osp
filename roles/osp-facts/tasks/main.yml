@@ -1,0 +1,28 @@
+---
+- name: Fetch instance information
+  os_server_facts:
+    cloud: ospcloud
+    region_name: RegionOne
+  register: result
+
+- debug:
+    var: result
+
+# when using ansible tower, host_group can be selected for playbook execution
+# add when-clause for specific required hostgroup (e.g. pega-nodes)
+- name: Add host
+  add_host:
+    name: "{{ item.public_v4 }}"
+    group: "{{ item.metadata.group }}"
+    # ansible_ssh_private_key_file: ~/.ssh/openstack.pem
+    # ansible_ssh_user: cloud-user
+  with_items: "{{result.ansible_facts.openstack_servers}}"
+
+- name: Add host
+  add_host:
+    name: "{{ item.public_v4 }}"
+    group: "{{ item.metadata.deployment_name }}"
+    # ansible_ssh_private_key_file: ~/.ssh/openstack.pem
+    # ansible_ssh_user: cloud-user
+  with_items: "{{result.ansible_facts.openstack_servers}}"
+

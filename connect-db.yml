@@ -1,0 +1,22 @@
+---
+- name: Create dynamic inventory of OSP instances
+  hosts: jumphost
+  gather_facts: true
+  roles:
+    - osp-facts
+
+- name: Connect PEGA instances using empty db
+  hosts: pega-instances-empty-db
+  become: true
+  roles:
+    - pega-empty-db
+
+- name: Connect PEGA instances using existing db
+  hosts: pega-instances-existing-db
+  become: true
+  roles:
+    - pega-existing-db
+
+
+
+

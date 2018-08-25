@@ -1,0 +1,6 @@
+---
+- name: Setup jumphost for OSP connection
+  hosts: workstation
+  become: true
+  roles:
+    - setup-workstation
